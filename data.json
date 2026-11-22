@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:11:32Z",
+  "updated": "2026-11-22T23:11:46Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -319,6 +319,13 @@
       "end": "2026-12-31",
       "label": "Leave",
       "cat": "leave"
+    },
+    {
+      "id": "emwsgbfu34oz9",
+      "start": "2027-01-04",
+      "end": "2027-01-04",
+      "label": "Mia INSET",
+      "cat": "amber"
     },
     {
       "id": "emwsg69jxwp1l",
