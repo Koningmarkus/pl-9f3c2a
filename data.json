@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:46:15Z",
+  "updated": "2026-11-22T23:46:33Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -438,6 +438,13 @@
       "end": "2027-08-31",
       "label": "Philip Summer",
       "cat": "amber"
+    },
+    {
+      "id": "emwshk6s5g68q",
+      "start": "2027-10-01",
+      "end": "2027-10-01",
+      "label": "Foundation Ball TBC",
+      "cat": "out"
     },
     {
       "id": "emwshgrrpq32h",
