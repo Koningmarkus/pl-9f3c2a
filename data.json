@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:28:01Z",
+  "updated": "2026-11-22T23:28:04Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -318,13 +318,6 @@
       "start": "2026-12-19",
       "end": "2027-01-03",
       "label": "Philip Xmas",
-      "cat": "amber"
-    },
-    {
-      "id": "emwsga07k61f4",
-      "start": "2026-12-21",
-      "end": "2027-01-01",
-      "label": "Mia Xmas",
       "cat": "amber"
     },
     {
