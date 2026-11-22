@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T22:39:24Z",
+  "updated": "2026-11-22T22:42:47Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -237,13 +237,6 @@
       "cat": "stockport"
     },
     {
-      "id": "emwsf5txefpb2",
-      "start": "2026-11-23",
-      "end": "2026-11-24",
-      "label": "Test event",
-      "cat": "purple"
-    },
-    {
       "id": "ev14",
       "start": "2026-11-23",
       "end": "2026-11-24",
@@ -298,6 +291,13 @@
       "end": "2027-04-16",
       "label": "test2",
       "cat": "purple"
+    },
+    {
+      "id": "emwsecpzt4sdm",
+      "start": "2027-07-05",
+      "end": "2027-07-05",
+      "label": "Test3",
+      "cat": "out"
     }
   ]
 }
