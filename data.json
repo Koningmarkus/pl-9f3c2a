@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T22:46:09Z",
+  "updated": "2026-11-22T23:00:33Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -311,6 +311,13 @@
       "start": "2027-07-12",
       "end": "2027-07-12",
       "label": "test5",
+      "cat": "out"
+    },
+    {
+      "id": "emwsfx0rb3toy",
+      "start": "2027-08-25",
+      "end": "2027-08-25",
+      "label": "Test",
       "cat": "out"
     }
   ]
