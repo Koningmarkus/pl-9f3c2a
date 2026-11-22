@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:28:04Z",
+  "updated": "2026-11-22T23:28:07Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -312,13 +312,6 @@
       "end": "2027-01-07",
       "label": "Thompsons",
       "cat": "purple"
-    },
-    {
-      "id": "emwsg78578g33",
-      "start": "2026-12-19",
-      "end": "2027-01-03",
-      "label": "Philip Xmas",
-      "cat": "amber"
     },
     {
       "id": "ev05",
