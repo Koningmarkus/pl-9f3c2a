@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:23:28Z",
+  "updated": "2026-11-22T23:24:10Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -310,7 +310,7 @@
       "id": "emwsgqhyenqv9",
       "start": "2026-12-18",
       "end": "2026-12-18",
-      "label": "M&P TermEnd",
+      "label": "End",
       "cat": "amber"
     },
     {
