@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:13:30Z",
+  "updated": "2026-11-22T23:13:39Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -338,7 +338,7 @@
       "id": "emwsg6ymnrylg",
       "start": "2027-02-06",
       "end": "2027-02-06",
-      "label": "Mia - Medical 10:00",
+      "label": "MiaMed10:00",
       "cat": "green"
     },
     {
