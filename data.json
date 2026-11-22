@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:28:16Z",
+  "updated": "2026-11-22T23:43:55Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -431,6 +431,13 @@
       "end": "2027-08-31",
       "label": "Philip Summer",
       "cat": "amber"
+    },
+    {
+      "id": "emwshgrrpq32h",
+      "start": "2027-10-07",
+      "end": "2027-10-09",
+      "label": "ExComm Worcester",
+      "cat": "out"
     }
   ]
 }
