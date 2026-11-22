@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Markus Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Caveat:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: a paper wall planner, twelve months. One row per month, 37 weekday-aligned
+     columns, dates in a thin strip and written marker bars in lanes beneath. */
+  :root{
+    --paper:#FAF7F0; --paper-2:#F2EDE2; --card:#FFFDF8; --weekend:#EBE5D8;
+    --ink:#1A1A17; --ink-2:#4A4A43; --muted:#8A857A;
+    --rule:#D5CEBE; --rule-soft:#E6E0D2;
+    --accent:#1F5FBF; --warn:#A32A1E; --ok:#2B6248;
+    --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+    --f-hand:"Caveat","Bradley Hand","Segoe Print",cursive;
+    --f-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+    --cw:38px; --lw:59px; --dateh:18px; --laneh:19px; --barfs:14px; --numfs:10px; --hdrfs:10px;
+    --mlabfs:12px; --mlabem:9px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme:dark;
+      --paper:#14141A; --paper-2:#1C1C24; --card:#1A1A22; --weekend:#23232D;
+      --ink:#EFEADF; --ink-2:#C7C2B6; --muted:#8B8679;
+      --rule:#35353F; --rule-soft:#282830;
+      --accent:#7FA9F0; --warn:#E0796C; --ok:#6FBF97;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme:dark;
+    --paper:#14141A; --paper-2:#1C1C24; --card:#1A1A22; --weekend:#23232D;
+    --ink:#EFEADF; --ink-2:#C7C2B6; --muted:#8B8679;
+    --rule:#35353F; --rule-soft:#282830;
+    --accent:#7FA9F0; --warn:#E0796C; --ok:#6FBF97;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:var(--f-display); font-size:15px; line-height:1.5;
+    padding-left:max(16px, env(safe-area-inset-left, 0px));
+    padding-right:max(16px, env(safe-area-inset-right, 0px));
+    padding-block:0 4rem;
+    -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent;
+  }
+  .topbar{background:var(--paper)}
+  header.top{
+    background:var(--paper); padding-block:.8rem .5rem; border-bottom:2px solid var(--ink);
+    display:flex; align-items:baseline; gap:.6rem; flex-wrap:wrap;
+  }
+  header.top h1{font-family:var(--f-hand);font-size:1.75rem;font-weight:700;margin:0;line-height:1}
+  .gauge{
+    margin-left:auto; display:flex; align-items:baseline; gap:.3rem;
+    font-family:var(--f-mono); font-size:.66rem; color:var(--muted);
+    border:1px solid var(--rule); border-radius:3px; padding:.25rem .55rem; background:var(--card);
+  }
+  .gauge b{font-size:.9rem;color:var(--ink);font-variant-numeric:tabular-nums}
+  .gauge.over b{color:var(--warn)}
+
+  .tools{
+    background:var(--paper); border-bottom:1px solid var(--rule);
+    padding-block:.45rem .5rem; display:flex; gap:.35rem; align-items:center; flex-wrap:wrap;
+  }
+  .tbtn{
+    border:1px solid var(--rule); background:var(--card); color:var(--ink-2);
+    font:inherit; font-size:.76rem; font-weight:600; padding:.3rem .55rem;
+    border-radius:3px; cursor:pointer; min-height:32px; min-width:32px;
+  }
+  .tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .tbtn[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);color:var(--ink)}
+  .grp{display:flex;gap:.25rem;align-items:center}
+  .grp.zoom{margin-left:auto}
+  .note{font-family:var(--f-hand);font-size:1.02rem;color:var(--ink-2);line-height:1.2;flex:1 1 11rem;min-width:0}
+  .note b{font-weight:700;color:var(--ink)}
+
+  .planner{
+    overflow:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--rule);
+    background:var(--card); border-radius:3px; margin-top:.75rem; cursor:grab;
+    touch-action:pan-x pan-y; overscroll-behavior-x:contain;
+    scrollbar-color:var(--rule) var(--paper-2);
+  }
+  .planner:not(.ratio){height:min(76vh, 900px); min-height:230px}
+  @supports (height:1dvh){ .planner:not(.ratio){height:min(76dvh, 900px)} }
+  .planner::-webkit-scrollbar{height:13px;width:13px}
+  .planner::-webkit-scrollbar-corner{background:var(--paper-2)}
+  .planner::-webkit-scrollbar-track{background:var(--paper-2);border-top:1px solid var(--rule-soft)}
+  .planner::-webkit-scrollbar-thumb{background:var(--rule);border-radius:7px;border:3px solid var(--paper-2)}
+  .planner::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+  .planner.panning,.planner.panning *{cursor:grabbing!important}
+  .pl{width:max-content}
+  .planner.ratio{overflow:hidden; aspect-ratio:16 / 9; touch-action:auto; margin-inline:auto; max-width:100%}
+  .planner.ratio .pl{transform-origin:0 0; min-width:0}
+
+  .hdr{display:grid; grid-template-columns:var(--lw) repeat(37, var(--cw)); background:var(--paper-2); border-bottom:1px solid var(--rule); position:sticky; top:0; z-index:6}
+  .hdr > div{font-family:var(--f-mono);font-size:var(--hdrfs);color:var(--muted);text-align:center;line-height:1.9;height:calc(var(--hdrfs) * 1.9)}
+  .hdr > div.we{color:var(--ink-2);background:var(--weekend)}
+  .hdr > div.corner{position:sticky;left:0;z-index:7;background:var(--paper-2);text-align:left;padding-left:.25em;letter-spacing:.05em;border-right:1px solid var(--rule);overflow:hidden}
+
+  .mrow{display:grid; grid-template-columns:var(--lw) 1fr; border-bottom:1px solid var(--rule)}
+  .mrow:last-child{border-bottom:0}
+  .mlab{
+    position:sticky; left:0; z-index:5; background:var(--card); border-right:1px solid var(--rule);
+    display:flex; flex-direction:column; justify-content:center; padding:0 .25em;
+    font-size:var(--mlabfs); font-weight:700; line-height:1.15; overflow:hidden;
+  }
+  .mlab em{font-style:normal;font-family:var(--f-mono);font-size:var(--mlabem);font-weight:400;color:var(--muted)}
+  .track{display:grid; position:relative}
+  .colbg{grid-row:1 / -1; z-index:0; border-right:1px solid var(--rule-soft)}
+  .colbg.we{background:var(--weekend)}
+  .colbg.void{background:var(--paper-2); opacity:.7}
+
+  .dnum{
+    grid-row:1; z-index:1; font-family:var(--f-mono); font-size:var(--numfs); font-variant-numeric:tabular-nums;
+    color:var(--muted); display:grid; place-items:center; height:var(--dateh); position:relative;
+  }
+  .dnum.bh{color:var(--accent); font-weight:500}
+  .dnum.today{color:var(--ink); font-weight:600}
+  .dnum.today::after{content:"";position:absolute;inset:1px;border:1.5px solid var(--ink);border-radius:50%}
+
+  .hit{grid-row:1 / -1; z-index:2; background:transparent; border:0; padding:0; cursor:crosshair}
+  .hit:focus-visible{outline:2px solid var(--accent); outline-offset:-2px}
+  .hit.sel{background:rgba(31,95,191,.16); box-shadow:inset 0 0 0 2px var(--accent)}
+
+  .bar{
+    z-index:3; border:0; cursor:pointer; text-align:left; align-self:center;
+    height:calc(var(--laneh) - 2px); margin:0 1px; padding:0 .3em;
+    font-family:var(--f-hand); font-size:var(--barfs); font-weight:600; line-height:1;
+    color:var(--ink); white-space:nowrap; overflow:visible;
+    display:flex; align-items:center;
+    border-radius:7px 11px 8px 10px / 10px 7px 11px 8px;
+  }
+  .bar span{pointer-events:none; text-shadow:0 1px 0 rgba(255,255,255,.35)}
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .bar span{text-shadow:none} }
+  :root[data-theme="dark"] .bar span{text-shadow:none}
+  .bar:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+
+  .swipe{font-family:var(--f-mono);font-size:.62rem;color:var(--muted);padding-top:.4rem}
+
+  .scrim{position:fixed;inset:0;background:rgba(10,10,8,.42);z-index:40}
+  .sheet{
+    position:fixed; left:0; right:0; bottom:0; z-index:41; background:var(--card);
+    border-top:2px solid var(--ink); border-radius:12px 12px 0 0;
+    padding:1rem max(16px, env(safe-area-inset-left,0px)) calc(1rem + env(safe-area-inset-bottom,0px));
+    max-height:84vh; overflow-y:auto;
+  }
+  .sheet h3{font-family:var(--f-hand);font-size:1.5rem;margin:0 0 .15rem;font-weight:700}
+  .sheet .when{font-family:var(--f-mono);font-size:.7rem;color:var(--muted);margin-bottom:.8rem}
+  .field{display:block;margin-bottom:.8rem}
+  .field > span{display:block;font-family:var(--f-mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.3rem}
+  .field input[type=text]{width:100%;font-family:var(--f-hand);font-size:1.3rem;padding:.4rem .55rem;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink)}
+  .field input[type=date],.field input[type=password]{width:100%;font:inherit;font-size:.9rem;padding:.4rem .5rem;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink)}
+  .field.plain input[type=text]{font-family:inherit;font-size:.9rem}
+  .dates{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+  .swatches{display:flex;gap:.4rem;flex-wrap:wrap}
+  .swatch{
+    border:1px solid var(--rule); border-radius:4px; background:var(--paper); cursor:pointer;
+    padding:.35rem .55rem; font-size:.74rem; font-weight:600; color:var(--ink-2);
+    display:inline-flex; align-items:center; gap:.35rem; min-height:34px; font-family:inherit;
+  }
+  .swatch i{width:.85rem;height:.85rem;border-radius:3px;display:block;border:1px solid rgba(0,0,0,.2)}
+  .swatch[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);color:var(--ink)}
+  .acts{display:flex;gap:.5rem;padding-top:.3rem;flex-wrap:wrap}
+  .acts button{font:inherit;font-size:.82rem;font-weight:600;padding:.5rem .9rem;border-radius:4px;cursor:pointer;min-height:40px;border:1px solid var(--rule);background:var(--paper);color:var(--ink)}
+  .acts .save{background:var(--ink);color:var(--paper);border-color:var(--ink);flex:1 1 8rem}
+  .acts .del{margin-left:auto;color:var(--warn);border-color:var(--warn)}
+  .hintline{font-family:var(--f-mono);font-size:.64rem;color:var(--muted);line-height:1.7;margin:.1rem 0 .8rem}
+
+  details.panel{margin-top:1.1rem;background:var(--card);border:1px solid var(--rule);border-radius:3px}
+  details.panel>summary{cursor:pointer;padding:.65rem .8rem;font-size:.78rem;font-weight:600;color:var(--ink-2);list-style:none;display:flex;justify-content:space-between;align-items:center}
+  details.panel>summary::-webkit-details-marker{display:none}
+  details.panel>summary::after{content:"edit";font-family:var(--f-mono);font-size:.63rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+  details.panel[open]>summary::after{content:"close"}
+  .panel-body{padding:0 .8rem .85rem;border-top:1px solid var(--rule-soft)}
+  .catrow{display:flex;align-items:center;gap:.55rem;padding:.5rem 0;border-bottom:1px solid var(--rule-soft);flex-wrap:wrap}
+  .catrow:last-child{border-bottom:0}
+  .catrow i{width:1rem;height:1rem;border-radius:3px;flex:0 0 auto;border:1px solid rgba(0,0,0,.2);display:block}
+  .catrow input[type=text]{flex:1 1 9rem;min-width:0;font:inherit;font-size:.82rem;padding:.3rem .45rem;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink)}
+  .catrow label.lv{display:inline-flex;align-items:center;gap:.3rem;font-family:var(--f-mono);font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  .catrow .n{font-family:var(--f-mono);font-size:.66rem;color:var(--muted);min-width:2.4rem;text-align:right}
+  .allow{display:flex;align-items:center;gap:.5rem;padding-top:.65rem;font-size:.8rem;color:var(--ink-2);flex-wrap:wrap}
+  .allow input[type=number]{width:4.4rem;font:inherit;padding:.3rem .45rem;border:1px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--ink)}
+
+  .status{font-family:var(--f-mono);font-size:.68rem;color:var(--muted);padding:.6rem 0 0;min-height:1.1rem}
+  .status.bad{color:var(--warn)}
+  .status.good{color:var(--ok)}
+  footer{margin-top:1.3rem;padding-top:.85rem;border-top:1px solid var(--rule);font-family:var(--f-mono);font-size:.64rem;line-height:1.8;color:var(--muted)}
+  footer a{color:var(--accent)}
+
+  @media (max-width:560px){
+    header.top{padding-block:.5rem .3rem; gap:.4rem}
+    header.top h1{font-size:1.25rem}
+    .gauge{font-size:.6rem;padding:.18rem .4rem}
+    .gauge b{font-size:.76rem}
+    .tools{padding-block:.3rem .35rem;gap:.25rem}
+    .tbtn{font-size:.7rem;padding:.22rem .42rem;min-height:30px;min-width:30px}
+    .note{display:none}
+    .note.active{display:block;font-size:.88rem;flex-basis:100%}
+    .planner{margin-top:.45rem}
+    .swipe{font-size:.58rem;padding-top:.3rem}
+  }
+  @media (max-height:560px){
+    body{padding-block:0 1.2rem}
+    header.top{padding-block:.28rem .2rem;border-bottom-width:1px}
+    header.top h1{font-size:1.08rem}
+    .gauge{font-size:.56rem;padding:.12rem .34rem}
+    .gauge b{font-size:.72rem}
+    .tools{padding-block:.2rem .24rem}
+    .tbtn{font-size:.66rem;padding:.16rem .38rem;min-height:26px;min-width:26px}
+    .note{display:none}
+    .note.active{display:block;font-size:.8rem}
+    .planner{margin-top:.28rem}
+    .swipe{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="topbar">
+    <header class="top">
+      <h1 id="range">Twelve months</h1>
+      <div class="gauge" id="gauge"><b id="gTaken">0</b><span>of</span><b id="gAllow">24</b><span id="gLabel">leave used</span></div>
+    </header>
+    <div class="tools">
+      <div class="grp">
+        <button type="button" class="tbtn" id="prev" aria-label="Back one month">&#8592;</button>
+        <button type="button" class="tbtn" id="today">Today</button>
+        <button type="button" class="tbtn" id="next" aria-label="Forward one month">&#8594;</button>
+      </div>
+      <p class="note" id="note">Tap the first day, then the last, and write on it.</p>
+      <div class="grp zoom">
+        <button type="button" class="tbtn" id="cog" aria-label="Settings">&#9881;</button>
+        <button type="button" class="tbtn" id="r169" aria-pressed="false">16:9</button>
+        <button type="button" class="tbtn" id="zout" aria-label="Zoom out">&#8722;</button>
+        <button type="button" class="tbtn" id="zfit">Fit</button>
+        <button type="button" class="tbtn" id="zin" aria-label="Zoom in">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="planner" id="planner"><div class="pl"><div class="hdr" id="hdr"></div><div id="rows"></div></div></div>
+  <p class="swipe" id="swipe">Drag anywhere to pan both ways. Command or control plus scroll to zoom, or pinch on touch. Months stay pinned left, weekdays pinned top.</p>
+
+  <details class="panel">
+    <summary>Pen colours and leave allowance</summary>
+    <div class="panel-body">
+      <div id="cats"></div>
+      <div class="allow">
+        <label for="allowance" id="allowLabel">Leave allowance</label>
+        <input type="number" id="allowance" min="0" max="365" step="0.5">
+        <span class="n" id="allowNote"></span>
+      </div>
+    </div>
+  </details>
+
+  <p class="status" id="status">Loading…</p>
+
+  <footer>
+    One row per month, thirty seven columns so weekdays line up. Bank holidays are England and Wales, their dates shown in blue.<br>
+    Leave counts working days only, so a weekend or bank holiday inside a bar is free.<br>
+    Entries live in <code>data.json</code> in this repository. <a href="planner.ics">planner.ics</a> is the calendar feed.
+  </footer>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+
+<div class="sheet" id="editor" hidden role="dialog" aria-modal="true" aria-labelledby="edTitle">
+  <h3 id="edTitle">New entry</h3>
+  <p class="when" id="edWhen"></p>
+  <label class="field"><span>What is it</span><input type="text" id="edLabel" autocomplete="off" placeholder="Write it here"></label>
+  <div class="dates">
+    <label class="field"><span>From</span><input type="date" id="edStart"></label>
+    <label class="field"><span>To</span><input type="date" id="edEnd"></label>
+  </div>
+  <div class="field"><span>Pen</span><div class="swatches" id="edPens"></div></div>
+  <div class="acts">
+    <button type="button" class="save" id="edSave">Save</button>
+    <button type="button" id="edClose">Close</button>
+    <button type="button" class="del" id="edDel" hidden>Delete</button>
+  </div>
+</div>
+
+<div class="sheet" id="settings" hidden role="dialog" aria-modal="true" aria-labelledby="stTitle">
+  <h3 id="stTitle">Settings</h3>
+  <p class="when">Saving writes <code>data.json</code> back to GitHub. Without a token the planner is read only.</p>
+  <label class="field plain"><span>GitHub user</span><input type="text" id="stOwner" autocomplete="off" spellcheck="false"></label>
+  <label class="field plain"><span>Repository</span><input type="text" id="stRepo" autocomplete="off" spellcheck="false"></label>
+  <label class="field plain"><span>Branch</span><input type="text" id="stBranch" autocomplete="off" spellcheck="false"></label>
+  <label class="field"><span>Personal access token</span><input type="password" id="stToken" autocomplete="off" spellcheck="false" placeholder="github_pat_…"></label>
+  <p class="hintline">
+    Fine grained token, this repository only, Contents read and write. It is kept in this browser's own storage on this device, never sent anywhere but github.com, and never written into the repository.
+  </p>
+  <div class="acts">
+    <button type="button" class="save" id="stSave">Save settings</button>
+    <button type="button" id="stExport">Download JSON</button>
+    <button type="button" id="stClose">Close</button>
+    <button type="button" class="del" id="stForget">Forget token</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------------------------------------------------------
+     CONFIG. Set these once, or fill them in from the settings panel.
+     --------------------------------------------------------------- */
+  var GH_DEFAULT = { owner:"YOUR-GITHUB-USERNAME", repo:"planner", branch:"main", path:"data.json" };
+
+  var MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+  var MSHORT=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var DOW=["Su","M","Tu","W","Th","F","Sa"];
+  var COLS=37, SHOW=12;
+
+  var BH={
+    "2026-01-01":1,"2026-04-03":1,"2026-04-06":1,"2026-05-04":1,"2026-05-25":1,"2026-08-31":1,"2026-12-25":1,"2026-12-28":1,
+    "2027-01-01":1,"2027-03-26":1,"2027-03-29":1,"2027-05-03":1,"2027-05-31":1,"2027-08-30":1,"2027-12-27":1,"2027-12-28":1,
+    "2028-01-03":1,"2028-04-14":1,"2028-04-17":1,"2028-05-01":1,"2028-05-29":1,"2028-08-28":1,"2028-12-25":1,"2028-12-26":1,
+    "2029-01-01":1,"2029-03-30":1,"2029-04-02":1,"2029-05-07":1,"2029-05-28":1,"2029-08-27":1,"2029-12-25":1,"2029-12-26":1
+  };
+
+  var FALLBACK_CATS=[
+    {id:"leave",     name:"Annual leave",  color:"#E0362A", leave:true},
+    {id:"out",       name:"Out of house",  color:"#3C7D5A", leave:false},
+    {id:"amber",     name:"Half term",     color:"#F2A52B", leave:false},
+    {id:"stockport", name:"Stockport",     color:"#E8903A", leave:false},
+    {id:"physio",    name:"Physio",        color:"#2BB3E8", leave:false}
+  ];
+
+  var now=new Date();
+  var state={
+    cats:FALLBACK_CATS.map(function(c){return Object.assign({},c);}),
+    allowance:24, events:{}, sha:null,
+    pendingStart:null, editingId:null, editPen:"leave",
+    startY:now.getFullYear(), startM:now.getMonth(),
+    leaveYear:now.getFullYear(),
+    cw:38, ratio:false, dirty:false, loaded:false,
+    gh:Object.assign({},GH_DEFAULT), token:""
+  };
+
+  var el={};
+  ["hdr","rows","note","gauge","gTaken","gAllow","gLabel","allowance","allowLabel","allowNote","status","cats",
+   "range","prev","next","today","planner","zin","zout","zfit","r169","swipe","cog",
+   "scrim","editor","edTitle","edWhen","edLabel","edStart","edEnd","edPens","edSave","edClose","edDel",
+   "settings","stOwner","stRepo","stBranch","stToken","stSave","stClose","stForget","stExport"]
+   .forEach(function(k){ el[k]=document.getElementById(k); });
+
+  function pad(n){ return String(n).padStart(2,"0"); }
+  function iso(y,m,d){ return y+"-"+pad(m+1)+"-"+pad(d); }
+  function parseIso(s){ var p=s.split("-"); return new Date(Date.UTC(+p[0], +p[1]-1, +p[2])); }
+  function dayDiff(a,b){ return Math.round((parseIso(b)-parseIso(a))/86400000); }
+  function todayIso(){ var n=new Date(); return iso(n.getFullYear(), n.getMonth(), n.getDate()); }
+  function catById(id){ for(var i=0;i<state.cats.length;i++) if(state.cats[i].id===id) return state.cats[i]; return state.cats[0]; }
+  function rgba(hex,a){
+    var h=String(hex||"#999999").replace("#","");
+    if(h.length===3) h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    var n=parseInt(h,16); if(isNaN(n)) n=0x999999;
+    return "rgba("+((n>>16)&255)+","+((n>>8)&255)+","+(n&255)+","+a+")";
+  }
+  function fmt(s){ var d=parseIso(s); return d.getUTCDate()+" "+MSHORT[d.getUTCMonth()]+" "+String(d.getUTCFullYear()).slice(2); }
+  function setStatus(msg,kind){ el.status.textContent=msg||""; el.status.className="status"+(kind?" "+kind:""); }
+  function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+
+  function windowMonths(){
+    var out=[];
+    for(var i=0;i<SHOW;i++){
+      var d=new Date(Date.UTC(state.startY, state.startM+i, 1));
+      out.push({y:d.getUTCFullYear(), m:d.getUTCMonth()});
+    }
+    return out;
+  }
+  function segments(ev){
+    var out=[], s=parseIso(ev.start), e=parseIso(ev.end);
+    if(e<s){ var t=s; s=e; e=t; }
+    var cur=new Date(s.getTime());
+    while(cur<=e){
+      var y=cur.getUTCFullYear(), m=cur.getUTCMonth();
+      var lastOfMonth=new Date(Date.UTC(y,m+1,0));
+      var segEnd = e<lastOfMonth ? e : lastOfMonth;
+      out.push({y:y, m:m, from:cur.getUTCDate(), to:segEnd.getUTCDate()});
+      cur=new Date(Date.UTC(y,m+1,1));
+    }
+    return out;
+  }
+  function eventDays(ev){
+    var s=parseIso(ev.start), e=parseIso(ev.end);
+    if(e<s){ var t=s; s=e; e=t; }
+    return Math.round((e-s)/86400000)+1;
+  }
+  function isWorkday(d){
+    var w=d.getUTCDay();
+    if(w===0||w===6) return false;
+    return !BH[iso(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())];
+  }
+  function workDaysIn(ev, year){
+    var n=0, s=parseIso(ev.start), e=parseIso(ev.end);
+    if(e<s){ var t=s; s=e; e=t; }
+    var cur=new Date(s.getTime());
+    while(cur<=e){
+      if((year===null || cur.getUTCFullYear()===year) && isWorkday(cur)) n++;
+      cur=new Date(cur.getTime()+86400000);
+    }
+    return n;
+  }
+
+  // ---------- zoom ----------
+  function applyZoom(){
+    var cw=state.cw, r=document.documentElement.style;
+    function px(f){ return (Math.round(cw*f*100)/100)+"px"; }
+    r.setProperty("--cw", cw+"px");
+    r.setProperty("--lw",     px(1.55));
+    r.setProperty("--laneh",  px(0.50));
+    r.setProperty("--dateh",  px(0.48));
+    r.setProperty("--barfs",  px(0.36));
+    r.setProperty("--numfs",  px(0.27));
+    r.setProperty("--hdrfs",  px(0.26));
+    r.setProperty("--mlabfs", px(0.31));
+    r.setProperty("--mlabem", px(0.23));
+    lsSet("plz", String(cw));
+  }
+  function minZoom(){
+    var w=(el.planner.clientWidth||600)-2;
+    return Math.max(8, Math.floor(w/(COLS+1.55)));
+  }
+  function setZoom(cw){
+    state.cw=Math.max(minZoom(), Math.min(96, Math.round(cw)));
+    applyZoom();
+  }
+  function fitZoom(){ setZoom(minZoom()); }
+  function fitRatio(){
+    var pl=el.planner.firstElementChild;
+    if(!pl) return;
+    pl.style.transform="";
+    el.planner.style.width=""; el.planner.style.height="";
+    if(!state.ratio) return;
+    var maxW=el.planner.clientWidth;
+    var avail=Math.max(150, window.innerHeight - 24);
+    var h=Math.min(maxW*9/16, avail);
+    el.planner.style.width=Math.round(h*16/9)+"px";
+    el.planner.style.height=Math.round(h)+"px";
+    var pw=pl.scrollWidth, ph=pl.scrollHeight;
+    var bw=el.planner.clientWidth, bh=el.planner.clientHeight;
+    if(!pw||!ph||!bw||!bh) return;
+    pl.style.transform="scale("+Math.min(bw/pw, bh/ph)+")";
+  }
+  function setRatio(on){
+    state.ratio=!!on;
+    el.r169.setAttribute("aria-pressed",String(state.ratio));
+    el.planner.classList.toggle("ratio",state.ratio);
+    el.swipe.textContent = state.ratio
+      ? "Scaled to 16:9, the whole twelve months in one frame. Best with the phone turned sideways."
+      : "Drag anywhere to pan both ways. Command or control plus scroll to zoom, or pinch on touch. Months stay pinned left, weekdays pinned top.";
+    fitRatio();
+  }
+  el.r169.addEventListener("click",function(){ setRatio(!state.ratio); lsSet("pl169b", state.ratio?"1":"0"); });
+  el.zin.addEventListener("click",function(){ setZoom(state.cw*1.25); });
+  el.zout.addEventListener("click",function(){ setZoom(state.cw/1.25); });
+  el.zfit.addEventListener("click",fitZoom);
+  var rzT=null;
+  window.addEventListener("resize",function(){ clearTimeout(rzT); rzT=setTimeout(function(){ setZoom(state.cw); fitRatio(); },120); });
+
+  el.planner.addEventListener("wheel",function(e){
+    if(!(e.ctrlKey||e.metaKey)) return;
+    e.preventDefault();
+    var pl=el.planner.firstElementChild; if(!pl) return;
+    var rect=el.planner.getBoundingClientRect();
+    var ox=e.clientX-rect.left, oy=e.clientY-rect.top;
+    var px=el.planner.scrollLeft+ox, py=el.planner.scrollTop+oy;
+    var w0=pl.scrollWidth, h0=pl.scrollHeight;
+    var f=Math.max(0.7, Math.min(1.4, Math.pow(1.0015, -e.deltaY)));
+    var before=state.cw;
+    setZoom(state.cw*f);
+    if(state.cw===before) return;
+    if(state.ratio){ fitRatio(); return; }
+    if(!w0||!h0) return;
+    el.planner.scrollLeft = px*(pl.scrollWidth/w0) - ox;
+    el.planner.scrollTop  = py*(pl.scrollHeight/h0) - oy;
+  },{passive:false});
+
+  (function pinch(){
+    var d0=0, cw0=0, active=false;
+    function dist(t){ var dx=t[0].clientX-t[1].clientX, dy=t[0].clientY-t[1].clientY; return Math.sqrt(dx*dx+dy*dy); }
+    el.planner.addEventListener("touchstart",function(e){
+      if(e.touches.length===2){ active=true; d0=dist(e.touches); cw0=state.cw; }
+    },{passive:true});
+    el.planner.addEventListener("touchmove",function(e){
+      if(!active || e.touches.length!==2) return;
+      e.preventDefault();
+      var d=dist(e.touches);
+      if(d0>0) setZoom(cw0*(d/d0));
+    },{passive:false});
+    function end(e){ if(e.touches.length<2) active=false; }
+    el.planner.addEventListener("touchend",end,{passive:true});
+    el.planner.addEventListener("touchcancel",end,{passive:true});
+  })();
+
+  (function pan(){
+    var sx=0, sy=0, sl=0, st=0, down=false, moved=false, suppress=false;
+    el.planner.addEventListener("pointerdown",function(e){
+      if(e.pointerType!=="mouse" || e.button!==0) return;
+      down=true; moved=false; sx=e.clientX; sy=e.clientY;
+      sl=el.planner.scrollLeft; st=el.planner.scrollTop;
+    });
+    window.addEventListener("pointermove",function(e){
+      if(!down) return;
+      var dx=e.clientX-sx, dy=e.clientY-sy;
+      if(!moved && Math.abs(dx)<4 && Math.abs(dy)<4) return;
+      if(!moved){ moved=true; el.planner.classList.add("panning"); }
+      e.preventDefault();
+      el.planner.scrollLeft = sl - dx;
+      el.planner.scrollTop  = st - dy;
+    },{passive:false});
+    window.addEventListener("pointerup",function(){
+      if(!down) return;
+      down=false; el.planner.classList.remove("panning");
+      if(moved){ suppress=true; setTimeout(function(){ suppress=false; },300); }
+      moved=false;
+    });
+    el.planner.addEventListener("click",function(e){
+      if(suppress){ e.stopPropagation(); e.preventDefault(); suppress=false; }
+    },true);
+    document.addEventListener("keydown",function(e){
+      if(!el.editor.hidden || !el.settings.hidden) return;
+      var t=e.target;
+      if(t && (t.tagName==="INPUT"||t.tagName==="TEXTAREA"||t.isContentEditable)) return;
+      if(e.key==="ArrowRight"){ el.planner.scrollLeft+=7*state.cw; e.preventDefault(); }
+      else if(e.key==="ArrowLeft"){ el.planner.scrollLeft-=7*state.cw; e.preventDefault(); }
+    });
+  })();
+
+  // ---------- render ----------
+  function buildHeader(){
+    el.hdr.textContent="";
+    var c=document.createElement("div"); c.className="corner"; c.textContent="Mth";
+    el.hdr.appendChild(c);
+    for(var i=0;i<COLS;i++){
+      var d=document.createElement("div");
+      var w=i%7;
+      d.className=(w===0||w===6)?"we":"";
+      d.textContent=DOW[w];
+      el.hdr.appendChild(d);
+    }
+  }
+
+  function render(){
+    el.rows.textContent="";
+    var tIso=todayIso(), win=windowMonths();
+    el.range.textContent = MSHORT[win[0].m]+" "+String(win[0].y).slice(2)+" to "+
+                           MSHORT[win[SHOW-1].m]+" "+String(win[SHOW-1].y).slice(2);
+
+    var buckets={};
+    win.forEach(function(w){ buckets[w.y+"-"+w.m]=[]; });
+    Object.keys(state.events).forEach(function(id){
+      var ev=state.events[id]; ev.id=id;
+      segments(ev).forEach(function(sg){
+        var k=sg.y+"-"+sg.m;
+        if(buckets[k]) buckets[k].push({ev:ev, from:sg.from, to:sg.to});
+      });
+    });
+
+    win.forEach(function(w){
+      var offset=new Date(Date.UTC(w.y,w.m,1)).getUTCDay();
+      var dim=new Date(Date.UTC(w.y,w.m+1,0)).getUTCDate();
+      var segs=buckets[w.y+"-"+w.m].slice().sort(function(a,b){ return a.from-b.from || (b.to-b.from)-(a.to-a.from); });
+      var lanes=[];
+      segs.forEach(function(sg){
+        var li=0;
+        for(;;){
+          if(!lanes[li]) lanes[li]=[];
+          var clash=lanes[li].some(function(x){ return !(sg.to<x.from || sg.from>x.to); });
+          if(!clash){ lanes[li].push(sg); sg.lane=li; break; }
+          li++;
+        }
+      });
+      var laneCount=Math.max(lanes.length,1);
+
+      var row=document.createElement("div"); row.className="mrow";
+      var lab=document.createElement("div"); lab.className="mlab";
+      var nm=document.createElement("b"); nm.textContent=MSHORT[w.m]; lab.appendChild(nm);
+      var yr=document.createElement("em"); yr.textContent=String(w.y); lab.appendChild(yr);
+      var lv=document.createElement("em"); lv.dataset.ml=w.y+"-"+w.m; lab.appendChild(lv);
+      row.appendChild(lab);
+
+      var track=document.createElement("div"); track.className="track";
+      track.style.gridTemplateColumns="repeat("+COLS+", var(--cw))";
+      track.style.gridTemplateRows="var(--dateh) repeat("+laneCount+", var(--laneh))";
+
+      for(var col=0; col<COLS; col++){
+        var ww=col%7, dayNum=col-offset+1;
+        var inMonth=(dayNum>=1 && dayNum<=dim);
+        var bg=document.createElement("div");
+        bg.className="colbg"+((ww===0||ww===6)?" we":"")+(inMonth?"":" void");
+        bg.style.gridColumn=String(col+1);
+        track.appendChild(bg);
+        if(!inMonth) continue;
+
+        var key=iso(w.y,w.m,dayNum);
+        var num=document.createElement("div");
+        num.className="dnum"+(BH[key]?" bh":"")+(key===tIso?" today":"");
+        num.style.gridColumn=String(col+1);
+        num.textContent=String(dayNum);
+        track.appendChild(num);
+
+        var hit=document.createElement("button");
+        hit.type="button"; hit.className="hit"+(state.pendingStart===key?" sel":"");
+        hit.style.gridColumn=String(col+1);
+        hit.dataset.iso=key;
+        hit.setAttribute("aria-label",dayNum+" "+MONTHS[w.m]+" "+w.y);
+        hit.addEventListener("click",onDayTap);
+        track.appendChild(hit);
+      }
+
+      segs.forEach(function(sg){
+        var c=catById(sg.ev.cat);
+        var b=document.createElement("button");
+        b.type="button"; b.className="bar";
+        b.style.gridColumn=(offset+sg.from)+" / span "+(sg.to-sg.from+1);
+        b.style.gridRow=String(sg.lane+2);
+        b.style.background=rgba(c.color,.34);
+        b.style.boxShadow="inset 0 0 0 1.5px "+rgba(c.color,.62);
+        b.dataset.id=sg.ev.id;
+        var sp=document.createElement("span");
+        sp.textContent=sg.ev.label || c.name;
+        b.appendChild(sp);
+        b.setAttribute("aria-label",(sg.ev.label||c.name)+", "+fmt(sg.ev.start)+" to "+fmt(sg.ev.end));
+        b.addEventListener("click",function(e){ e.stopPropagation(); openEditor(this.dataset.id); });
+        track.appendChild(b);
+      });
+
+      row.appendChild(track);
+      el.rows.appendChild(row);
+    });
+
+    updateCounts(); renderGauge(); renderCats(); fitRatio();
+  }
+
+  function updateCounts(){
+    var per={};
+    Object.keys(state.events).forEach(function(id){
+      var ev=state.events[id];
+      if(!catById(ev.cat).leave) return;
+      var s=parseIso(ev.start), e=parseIso(ev.end);
+      if(e<s){ var t=s; s=e; e=t; }
+      var cur=new Date(s.getTime());
+      while(cur<=e){
+        if(isWorkday(cur)){ var k=cur.getUTCFullYear()+"-"+cur.getUTCMonth(); per[k]=(per[k]||0)+1; }
+        cur=new Date(cur.getTime()+86400000);
+      }
+    });
+    var subs=el.rows.querySelectorAll("em[data-ml]");
+    for(var i=0;i<subs.length;i++){
+      var n=per[subs[i].dataset.ml]||0;
+      subs[i].textContent=n?n+"d lv":"";
+    }
+  }
+
+  function renderGauge(){
+    var taken=0;
+    Object.keys(state.events).forEach(function(id){
+      var ev=state.events[id];
+      if(catById(ev.cat).leave) taken+=workDaysIn(ev, state.leaveYear);
+    });
+    el.gTaken.textContent=String(taken);
+    el.gAllow.textContent=String(state.allowance);
+    el.gLabel.textContent="leave used in "+state.leaveYear;
+    el.gauge.className="gauge"+(taken>state.allowance?" over":"");
+    var left=state.allowance-taken;
+    el.allowNote.textContent=left>=0?(left+" left"):(Math.abs(left)+" over");
+    el.allowLabel.textContent="Leave allowance for "+state.leaveYear;
+    el.allowance.value=state.allowance;
+  }
+
+  function renderCats(){
+    el.cats.textContent="";
+    var counts={};
+    Object.keys(state.events).forEach(function(id){
+      var ev=state.events[id];
+      counts[ev.cat]=(counts[ev.cat]||0)+eventDays(ev);
+    });
+    state.cats.forEach(function(c){
+      var row=document.createElement("div"); row.className="catrow";
+      var sw=document.createElement("i"); sw.style.background=c.color;
+      var inp=document.createElement("input"); inp.type="text"; inp.value=c.name;
+      inp.id="catname-"+c.id; inp.setAttribute("aria-label","Name for this pen");
+      inp.addEventListener("change",function(){
+        c.name=inp.value.trim()||c.name; inp.value=c.name; render(); queueSave();
+      });
+      var lab=document.createElement("label"); lab.className="lv"; lab.htmlFor="catleave-"+c.id;
+      var cb=document.createElement("input"); cb.type="checkbox"; cb.id="catleave-"+c.id; cb.checked=!!c.leave;
+      cb.addEventListener("change",function(){ c.leave=cb.checked; render(); queueSave(); });
+      lab.appendChild(cb); lab.appendChild(document.createTextNode("counts as leave"));
+      var n=document.createElement("span"); n.className="n"; n.textContent=(counts[c.id]||0)+"d";
+      row.appendChild(sw); row.appendChild(inp); row.appendChild(lab); row.appendChild(n);
+      el.cats.appendChild(row);
+    });
+  }
+
+  function setNote(){
+    if(state.pendingStart){
+      el.note.textContent="";
+      el.note.appendChild(document.createTextNode("Started on "));
+      var b=document.createElement("b"); b.textContent=fmt(state.pendingStart);
+      el.note.appendChild(b);
+      el.note.appendChild(document.createTextNode(". Now tap the last day."));
+      el.note.classList.add("active");
+    } else {
+      el.note.textContent="Tap the first day, then the last, and write on it.";
+      el.note.classList.remove("active");
+    }
+  }
+
+  // ---------- navigation ----------
+  function shift(n){
+    var d=new Date(Date.UTC(state.startY, state.startM+n, 1));
+    state.startY=d.getUTCFullYear(); state.startM=d.getUTCMonth();
+    render();
+  }
+  el.prev.addEventListener("click",function(){ shift(-1); });
+  el.next.addEventListener("click",function(){ shift(1); });
+  el.today.addEventListener("click",function(){
+    var n=new Date();
+    state.startY=n.getFullYear(); state.startM=n.getMonth();
+    state.pendingStart=null; setNote(); render();
+  });
+
+  // ---------- entry editor ----------
+  function onDayTap(ev){
+    var key=ev.currentTarget.dataset.iso;
+    if(!state.pendingStart){ state.pendingStart=key; setNote(); render(); return; }
+    var a=state.pendingStart, b=key;
+    if(dayDiff(a,b)<0){ var t=a; a=b; b=t; }
+    state.pendingStart=null; setNote(); render();
+    openEditor(null, a, b);
+  }
+  function renderPens(){
+    el.edPens.textContent="";
+    state.cats.forEach(function(c){
+      var b=document.createElement("button");
+      b.type="button"; b.className="swatch";
+      b.setAttribute("aria-pressed",String(state.editPen===c.id));
+      var i=document.createElement("i"); i.style.background=c.color;
+      var s=document.createElement("span"); s.textContent=c.name;
+      b.appendChild(i); b.appendChild(s);
+      b.addEventListener("click",function(){ state.editPen=c.id; renderPens(); });
+      el.edPens.appendChild(b);
+    });
+  }
+  function openEditor(id, a, b){
+    state.editingId=id;
+    if(id){
+      var ev=state.events[id];
+      if(!ev) return;
+      el.edTitle.textContent="Edit entry";
+      el.edLabel.value=ev.label||"";
+      el.edStart.value=ev.start; el.edEnd.value=ev.end;
+      state.editPen=ev.cat; el.edDel.hidden=false;
+    } else {
+      el.edTitle.textContent="New entry";
+      el.edLabel.value=""; el.edStart.value=a; el.edEnd.value=b;
+      el.edDel.hidden=true;
+    }
+    refreshWhen(); renderPens();
+    el.scrim.hidden=false; el.editor.hidden=false;
+    setTimeout(function(){ el.edLabel.focus(); },30);
+  }
+  function closeSheets(){
+    el.scrim.hidden=true; el.editor.hidden=true; el.settings.hidden=true; state.editingId=null;
+  }
+  function refreshWhen(){
+    if(!el.edStart.value || !el.edEnd.value) return;
+    if(dayDiff(el.edStart.value, el.edEnd.value)<0) el.edEnd.value=el.edStart.value;
+    el.edWhen.textContent=fmt(el.edStart.value)+" to "+fmt(el.edEnd.value)+
+      "  ("+(dayDiff(el.edStart.value,el.edEnd.value)+1)+" days)";
+  }
+  el.edStart.addEventListener("change",refreshWhen);
+  el.edEnd.addEventListener("change",refreshWhen);
+  el.edClose.addEventListener("click",closeSheets);
+  el.scrim.addEventListener("click",closeSheets);
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeSheets(); });
+
+  el.edSave.addEventListener("click",function(){
+    var s=el.edStart.value, e=el.edEnd.value;
+    if(!s||!e) return;
+    if(dayDiff(s,e)<0){ var t=s; s=e; e=t; }
+    var id=state.editingId || ("e"+Date.now().toString(36)+Math.random().toString(36).slice(2,6));
+    state.events[id]={start:s, end:e, label:el.edLabel.value.trim(), cat:state.editPen};
+    closeSheets(); render(); queueSave();
+  });
+  el.edDel.addEventListener("click",function(){
+    if(!state.editingId) return;
+    delete state.events[state.editingId];
+    closeSheets(); render(); queueSave();
+  });
+  el.allowance.addEventListener("change",function(){
+    var v=parseFloat(el.allowance.value);
+    if(isNaN(v)||v<0){ renderGauge(); return; }
+    state.allowance=v; renderGauge(); queueSave();
+  });
+
+  // ---------- settings ----------
+  el.cog.addEventListener("click",function(){
+    el.stOwner.value=state.gh.owner; el.stRepo.value=state.gh.repo;
+    el.stBranch.value=state.gh.branch; el.stToken.value=state.token;
+    el.scrim.hidden=false; el.settings.hidden=false;
+  });
+  el.stClose.addEventListener("click",closeSheets);
+  el.stSave.addEventListener("click",function(){
+    state.gh.owner=el.stOwner.value.trim()||state.gh.owner;
+    state.gh.repo=el.stRepo.value.trim()||state.gh.repo;
+    state.gh.branch=el.stBranch.value.trim()||"main";
+    state.token=el.stToken.value.trim();
+    lsSet("plgh", JSON.stringify({owner:state.gh.owner,repo:state.gh.repo,branch:state.gh.branch}));
+    lsSet("pltok", state.token);
+    closeSheets();
+    setStatus(state.token?"Settings saved. Saving is on.":"Settings saved. Read only, no token.", state.token?"good":"");
+    if(state.dirty) doSave();
+  });
+  el.stForget.addEventListener("click",function(){
+    state.token=""; el.stToken.value=""; lsSet("pltok","");
+    closeSheets(); setStatus("Token removed from this device. Read only.","");
+  });
+  el.stExport.addEventListener("click",function(){
+    var blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:"application/json"});
+    var a=document.createElement("a");
+    a.href=URL.createObjectURL(blob); a.download="data.json";
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },500);
+  });
+
+  // ---------- storage ----------
+  function snapshot(){
+    var list=Object.keys(state.events).map(function(id){
+      var e=state.events[id];
+      return {id:id, start:e.start, end:e.end, label:e.label||"", cat:e.cat};
+    }).sort(function(a,b){ return a.start<b.start?-1:a.start>b.start?1:(a.id<b.id?-1:1); });
+    return {
+      version:1,
+      updated:new Date().toISOString().replace(/\.\d+Z$/,"Z"),
+      timezone:"Europe/London",
+      leaveAllowance:state.allowance,
+      pens:state.cats.map(function(c){ return {id:c.id,name:c.name,color:c.color,leave:!!c.leave}; }),
+      events:list
+    };
+  }
+  function adopt(doc){
+    if(!doc || typeof doc!=="object") return;
+    if(typeof doc.leaveAllowance==="number") state.allowance=doc.leaveAllowance;
+    if(Array.isArray(doc.pens) && doc.pens.length){
+      state.cats=doc.pens.filter(function(p){ return p && typeof p.id==="string"; })
+        .map(function(p){ return {id:p.id, name:p.name||p.id, color:p.color||"#999999", leave:!!p.leave}; });
+    }
+    var ev={};
+    (Array.isArray(doc.events)?doc.events:[]).forEach(function(e){
+      if(!e || typeof e.start!=="string" || typeof e.end!=="string") return;
+      var id=e.id || ("e"+Math.random().toString(36).slice(2,10));
+      ev[id]={start:e.start, end:e.end, label:typeof e.label==="string"?e.label:"", cat:typeof e.cat==="string"?e.cat:(state.cats[0]&&state.cats[0].id)||"leave"};
+    });
+    state.events=ev;
+    if(state.cats.length) state.editPen=state.cats[0].id;
+  }
+  function api(path, opts){
+    opts=opts||{};
+    opts.headers=Object.assign({
+      "Accept":"application/vnd.github+json",
+      "X-GitHub-Api-Version":"2022-11-28"
+    }, opts.headers||{});
+    if(state.token) opts.headers["Authorization"]="Bearer "+state.token;
+    return fetch("https://api.github.com"+path, opts);
+  }
+  function contentsPath(){
+    return "/repos/"+encodeURIComponent(state.gh.owner)+"/"+encodeURIComponent(state.gh.repo)+
+           "/contents/"+state.gh.path+"?ref="+encodeURIComponent(state.gh.branch);
+  }
+  function b64encode(str){
+    var bytes=new TextEncoder().encode(str), bin="";
+    for(var i=0;i<bytes.length;i++) bin+=String.fromCharCode(bytes[i]);
+    return btoa(bin);
+  }
+  function b64decode(b64){
+    var bin=atob(b64.replace(/\s/g,"")), bytes=new Uint8Array(bin.length);
+    for(var i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
+
+  function load(){
+    setStatus("Loading…");
+    if(state.token){
+      return api(contentsPath()).then(function(r){
+        if(!r.ok) throw new Error("GitHub said "+r.status);
+        return r.json();
+      }).then(function(j){
+        state.sha=j.sha;
+        adopt(JSON.parse(b64decode(j.content)));
+        state.loaded=true; render();
+        setStatus("Loaded. Saving is on.","good");
+      });
+    }
+    return fetch("data.json?t="+Date.now(),{cache:"no-store"}).then(function(r){
+      if(!r.ok) throw new Error("data.json "+r.status);
+      return r.json();
+    }).then(function(j){
+      adopt(j); state.loaded=true; render();
+      setStatus("Loaded. Read only, no token set. Open settings to add one.");
+    });
+  }
+
+  var saveT=null;
+  function queueSave(){
+    state.dirty=true;
+    if(!state.token){ setStatus("Changed, but not saved. No token on this device.","bad"); return; }
+    setStatus("Saving…");
+    clearTimeout(saveT);
+    saveT=setTimeout(doSave,700);
+  }
+  function doSave(retry){
+    if(!state.token){ setStatus("Not saved. No token on this device.","bad"); return; }
+    var body={
+      message:"Update planner",
+      content:b64encode(JSON.stringify(snapshot(),null,2)+"\n"),
+      branch:state.gh.branch
+    };
+    if(state.sha) body.sha=state.sha;
+    api("/repos/"+encodeURIComponent(state.gh.owner)+"/"+encodeURIComponent(state.gh.repo)+
+        "/contents/"+state.gh.path,
+        {method:"PUT", body:JSON.stringify(body), headers:{"Content-Type":"application/json"}})
+    .then(function(r){
+      if(r.status===409 || r.status===422){
+        if(retry) throw new Error("conflict");
+        return api(contentsPath()).then(function(x){ return x.json(); }).then(function(j){
+          state.sha=j.sha; return doSave(true);
+        });
+      }
+      if(!r.ok) return r.json().catch(function(){return {};}).then(function(j){
+        throw new Error(j.message||("GitHub said "+r.status));
+      });
+      return r.json().then(function(j){
+        state.sha=j.content && j.content.sha;
+        state.dirty=false;
+        setStatus("Saved to GitHub at "+new Date().toLocaleTimeString(),"good");
+      });
+    })
+    .catch(function(e){ setStatus("Not saved. "+e.message,"bad"); });
+  }
+
+  // ---------- boot ----------
+  try{
+    var g=JSON.parse(lsGet("plgh")||"null");
+    if(g && g.owner) state.gh=Object.assign(state.gh, g);
+  }catch(e){}
+  state.token=lsGet("pltok")||"";
+  var z=parseFloat(lsGet("plz"));
+  if(!isNaN(z)&&z>=8&&z<=96) state.cw=z;
+  applyZoom(); setZoom(state.cw);
+  buildHeader(); setNote();
+  setRatio(lsGet("pl169b")==="1");
+  render();
+
+  load().catch(function(e){
+    state.loaded=true;
+    setStatus("Could not load the planner. "+e.message,"bad");
+  });
+
+  window.addEventListener("beforeunload",function(e){
+    if(state.dirty){ e.preventDefault(); e.returnValue=""; }
+  });
+})();
+</script>
+</body>
+</html>
