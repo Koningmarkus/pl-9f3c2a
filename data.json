@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:11:59Z",
+  "updated": "2026-11-22T23:12:12Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -381,6 +381,13 @@
       "start": "2027-06-07",
       "end": "2027-06-07",
       "label": "Philip INSET",
+      "cat": "amber"
+    },
+    {
+      "id": "emwsgc02rf4lm",
+      "start": "2027-06-25",
+      "end": "2027-06-25",
+      "label": "Mia INSET",
       "cat": "amber"
     },
     {
