@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:26:32Z",
+  "updated": "2026-11-22T23:27:24Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -295,7 +295,7 @@
     {
       "id": "emwoupgrv615w",
       "start": "2026-12-11",
-      "end": "2026-12-12",
+      "end": "2026-12-11",
       "label": "XMAS BHW",
       "cat": "amber"
     },
