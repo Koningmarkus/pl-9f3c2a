@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:15:39Z",
+  "updated": "2026-11-22T23:16:07Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -403,6 +403,13 @@
       "end": "2027-07-12",
       "label": "test5",
       "cat": "out"
+    },
+    {
+      "id": "emwsgh1wlivk1",
+      "start": "2027-07-23",
+      "end": "2027-08-31",
+      "label": "Mia Summer",
+      "cat": "amber"
     }
   ]
 }
