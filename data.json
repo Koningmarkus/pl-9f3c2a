@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:22:35Z",
+  "updated": "2026-11-22T23:23:28Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -279,18 +279,18 @@
       "cat": "green"
     },
     {
-      "id": "ev16",
-      "start": "2026-12-07",
-      "end": "2026-12-08",
-      "label": "Stock",
-      "cat": "stockport"
-    },
-    {
       "id": "em4zxz9uuz2af",
       "start": "2026-12-07",
       "end": "2026-12-09",
       "label": "XMAS HQ",
       "cat": "amber"
+    },
+    {
+      "id": "ev16",
+      "start": "2026-12-07",
+      "end": "2026-12-08",
+      "label": "Stock",
+      "cat": "stockport"
     },
     {
       "id": "emwoupgrv615w",
@@ -305,6 +305,13 @@
       "end": "2026-12-15",
       "label": "Stock",
       "cat": "stockport"
+    },
+    {
+      "id": "emwsgqhyenqv9",
+      "start": "2026-12-18",
+      "end": "2026-12-18",
+      "label": "M&P TermEnd",
+      "cat": "amber"
     },
     {
       "id": "emwsg78578g33",
