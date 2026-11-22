@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:46:33Z",
+  "updated": "2026-11-22T23:48:12Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -389,6 +389,13 @@
       "end": "2027-04-16",
       "label": "test2",
       "cat": "purple"
+    },
+    {
+      "id": "emfuam541ztxw",
+      "start": "2027-05-28",
+      "end": "2027-06-04",
+      "label": "Mallorca",
+      "cat": "out"
     },
     {
       "id": "emwsgb5mcy3xc",
