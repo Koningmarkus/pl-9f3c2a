@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:24:10Z",
+  "updated": "2026-11-22T23:26:04Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -305,6 +305,13 @@
       "end": "2026-12-15",
       "label": "Stock",
       "cat": "stockport"
+    },
+    {
+      "id": "emwsgtu0tn21f",
+      "start": "2026-12-16",
+      "end": "2027-01-07",
+      "label": "Thompsons",
+      "cat": "purple"
     },
     {
       "id": "emwsgqhyenqv9",
