@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:10:53Z",
+  "updated": "2026-11-22T23:11:06Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -339,6 +339,13 @@
       "start": "2027-02-15",
       "end": "2027-02-19",
       "label": "Half term",
+      "cat": "amber"
+    },
+    {
+      "id": "emwsgal3yb8hj",
+      "start": "2027-03-26",
+      "end": "2027-04-11",
+      "label": "Philip Easter",
       "cat": "amber"
     },
     {
