@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:18:13Z",
+  "updated": "2026-11-22T23:18:59Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -408,7 +408,7 @@
       "id": "emwsgh1wlivk1",
       "start": "2027-07-23",
       "end": "2027-08-31",
-      "label": "Mia & Philip Summer",
+      "label": "Mia PhilipSummer",
       "cat": "amber"
     },
     {
