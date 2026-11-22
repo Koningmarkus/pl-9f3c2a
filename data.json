@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:11:19Z",
+  "updated": "2026-11-22T23:11:32Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -361,6 +361,13 @@
       "end": "2027-04-16",
       "label": "test2",
       "cat": "purple"
+    },
+    {
+      "id": "emwsgb5mcy3xc",
+      "start": "2027-05-31",
+      "end": "2027-06-04",
+      "label": "Half term",
+      "cat": "amber"
     },
     {
       "id": "emwsecpzt4sdm",
