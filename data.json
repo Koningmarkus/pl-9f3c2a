@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:22:19Z",
+  "updated": "2026-11-22T23:22:35Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -265,6 +265,13 @@
       "cat": "stockport"
     },
     {
+      "id": "emaaoqljfsswh",
+      "start": "2026-12-02",
+      "end": "2026-12-03",
+      "label": "Eccles, Devilla site visits",
+      "cat": "amber"
+    },
+    {
       "id": "emwsg5ydktfbw",
       "start": "2026-12-05",
       "end": "2026-12-05",
@@ -277,6 +284,20 @@
       "end": "2026-12-08",
       "label": "Stock",
       "cat": "stockport"
+    },
+    {
+      "id": "em4zxz9uuz2af",
+      "start": "2026-12-07",
+      "end": "2026-12-09",
+      "label": "XMAS HQ",
+      "cat": "amber"
+    },
+    {
+      "id": "emwoupgrv615w",
+      "start": "2026-12-11",
+      "end": "2026-12-12",
+      "label": "XMAS BHW",
+      "cat": "amber"
     },
     {
       "id": "ev18",
