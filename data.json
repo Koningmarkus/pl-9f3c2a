@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:12:12Z",
+  "updated": "2026-11-22T23:13:13Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -254,7 +254,7 @@
       "id": "emwsg58no5fcs",
       "start": "2026-11-25",
       "end": "2026-11-25",
-      "label": "Richelle - Medical 09:55",
+      "label": "RichelleMed09:55",
       "cat": "green"
     },
     {
