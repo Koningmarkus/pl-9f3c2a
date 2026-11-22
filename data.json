@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:06:56Z",
+  "updated": "2026-11-22T23:07:30Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -263,6 +263,13 @@
       "end": "2026-12-01",
       "label": "Stockport",
       "cat": "stockport"
+    },
+    {
+      "id": "emwsg5ydktfbw",
+      "start": "2026-12-05",
+      "end": "2026-12-05",
+      "label": "Mia - Medical 14:45",
+      "cat": "green"
     },
     {
       "id": "ev16",
