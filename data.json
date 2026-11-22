@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:26:04Z",
+  "updated": "2026-11-22T23:26:32Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -340,6 +340,13 @@
       "end": "2026-12-24",
       "label": "Leave",
       "cat": "leave"
+    },
+    {
+      "id": "emwsgufws8mp7",
+      "start": "2026-12-26",
+      "end": "2027-01-02",
+      "label": "ski",
+      "cat": "purple"
     },
     {
       "id": "ev06",
