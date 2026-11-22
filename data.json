@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:48:12Z",
+  "updated": "2026-11-22T23:48:40Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -237,6 +237,13 @@
       "cat": "stockport"
     },
     {
+      "id": "emghsih2spwp9",
+      "start": "2026-11-20",
+      "end": "2026-11-23",
+      "label": "TBC Stefan hulle",
+      "cat": "purple"
+    },
+    {
       "id": "emwsfeib0b33a",
       "start": "2026-11-23",
       "end": "2026-11-23",
@@ -314,6 +321,13 @@
       "cat": "purple"
     },
     {
+      "id": "emwgvf5oqw58v",
+      "start": "2026-12-17",
+      "end": "2027-01-06",
+      "label": "Thonpsons @ Greylings",
+      "cat": "purple"
+    },
+    {
       "id": "ev05",
       "start": "2026-12-24",
       "end": "2026-12-24",
@@ -326,6 +340,13 @@
       "end": "2027-01-02",
       "label": "ski",
       "cat": "green"
+    },
+    {
+      "id": "em03li32xk3ma",
+      "start": "2026-12-27",
+      "end": "2026-12-31",
+      "label": "THOMSONS",
+      "cat": "amber"
     },
     {
       "id": "ev06",
@@ -356,6 +377,20 @@
       "cat": "stockport"
     },
     {
+      "id": "emu5ixumz2taz",
+      "start": "2027-01-12",
+      "end": "2027-01-14",
+      "label": "INDIA",
+      "cat": "out"
+    },
+    {
+      "id": "em1ztwzoxy1cp",
+      "start": "2027-01-21",
+      "end": "2027-01-21",
+      "label": "Young Voices",
+      "cat": "purple"
+    },
+    {
       "id": "emwsg6ymnrylg",
       "start": "2027-02-06",
       "end": "2027-02-06",
@@ -363,11 +398,25 @@
       "cat": "green"
     },
     {
+      "id": "em2vabaudxfj2",
+      "start": "2027-02-12",
+      "end": "2027-02-20",
+      "label": "Ski - Valloire",
+      "cat": "out"
+    },
+    {
       "id": "emwsgaavrmzbw",
       "start": "2027-02-15",
       "end": "2027-02-19",
       "label": "Half term",
       "cat": "amber"
+    },
+    {
+      "id": "emlefkthcizem",
+      "start": "2027-03-12",
+      "end": "2027-03-14",
+      "label": "Rugby tour",
+      "cat": "out"
     },
     {
       "id": "emwsgal3yb8hj",
@@ -388,6 +437,13 @@
       "start": "2027-04-16",
       "end": "2027-04-16",
       "label": "test2",
+      "cat": "purple"
+    },
+    {
+      "id": "ema235uflo9jb",
+      "start": "2027-05-06",
+      "end": "2027-05-10",
+      "label": "Richelle away",
       "cat": "purple"
     },
     {
