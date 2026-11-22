@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:43:55Z",
+  "updated": "2026-11-22T23:46:15Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -347,6 +347,13 @@
       "end": "2027-01-09",
       "label": "MiaMed10:00",
       "cat": "green"
+    },
+    {
+      "id": "emwshjsr41fag",
+      "start": "2027-01-12",
+      "end": "2027-01-12",
+      "label": "Stock Excomm BCP",
+      "cat": "stockport"
     },
     {
       "id": "emwsg6ymnrylg",
