@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:04:34Z",
+  "updated": "2026-11-22T23:06:56Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -249,6 +249,13 @@
       "end": "2026-11-24",
       "label": "Stockport",
       "cat": "stockport"
+    },
+    {
+      "id": "emwsg58no5fcs",
+      "start": "2026-11-25",
+      "end": "2026-11-25",
+      "label": "Richelle - Medical 09:55",
+      "cat": "green"
     },
     {
       "id": "ev15",
