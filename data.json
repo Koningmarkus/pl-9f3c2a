@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:51:14Z",
+  "updated": "2026-11-22T23:51:20Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -410,13 +410,6 @@
       "end": "2027-04-09",
       "label": "Mia Easter",
       "cat": "amber"
-    },
-    {
-      "id": "emwse7vfx45tn",
-      "start": "2027-04-16",
-      "end": "2027-04-16",
-      "label": "test2",
-      "cat": "purple"
     },
     {
       "id": "ema235uflo9jb",
