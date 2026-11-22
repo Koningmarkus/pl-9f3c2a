@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:50:14Z",
+  "updated": "2026-11-22T23:50:28Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -333,13 +333,6 @@
       "end": "2027-01-02",
       "label": "ski",
       "cat": "green"
-    },
-    {
-      "id": "em03li32xk3ma",
-      "start": "2026-12-27",
-      "end": "2026-12-31",
-      "label": "THOMSONS",
-      "cat": "amber"
     },
     {
       "id": "ev06",
