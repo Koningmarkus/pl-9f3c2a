@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T21:49:28Z",
+  "updated": "2026-11-22T22:13:00Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -284,6 +284,13 @@
       "end": "2026-12-31",
       "label": "Leave",
       "cat": "leave"
+    },
+    {
+      "id": "emwse7vfx45tn",
+      "start": "2027-04-16",
+      "end": "2027-04-16",
+      "label": "test2",
+      "cat": "purple"
     }
   ]
 }
