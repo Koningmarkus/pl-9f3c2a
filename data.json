@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:10:39Z",
+  "updated": "2026-11-22T23:10:53Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -333,6 +333,13 @@
       "end": "2027-02-06",
       "label": "Mia - Medical 10:00",
       "cat": "green"
+    },
+    {
+      "id": "emwsgaavrmzbw",
+      "start": "2027-02-15",
+      "end": "2027-02-19",
+      "label": "Half term",
+      "cat": "amber"
     },
     {
       "id": "emwse7vfx45tn",
