@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:54:15Z",
+  "updated": "2026-11-22T23:54:35Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -310,8 +310,8 @@
       "id": "emwsgtu0tn21f",
       "start": "2026-12-16",
       "end": "2027-01-07",
-      "label": "Thompsons",
-      "cat": "purple"
+      "label": "Thompsons in UK",
+      "cat": "yellow"
     },
     {
       "id": "ev05",
