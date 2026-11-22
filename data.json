@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T22:13:00Z",
+  "updated": "2026-11-22T22:39:24Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -235,6 +235,13 @@
       "end": "2026-11-17",
       "label": "Stockport",
       "cat": "stockport"
+    },
+    {
+      "id": "emwsf5txefpb2",
+      "start": "2026-11-23",
+      "end": "2026-11-24",
+      "label": "Test event",
+      "cat": "purple"
     },
     {
       "id": "ev14",
