@@ -1,0 +1,21 @@
+name: Rebuild planner.ics
+on:
+  push:
+    paths: ["data.json", "make_ics.py", ".github/workflows/ics.yml"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 make_ics.py
+      - name: Commit if changed
+        run: |
+          git config user.name "planner-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add planner.ics
+          git diff --staged --quiet || git commit -m "Rebuild planner.ics"
+          git push
