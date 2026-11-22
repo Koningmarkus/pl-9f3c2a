@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:13:47Z",
+  "updated": "2026-11-22T23:14:03Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -163,7 +163,7 @@
       "id": "ev09",
       "start": "2026-09-01",
       "end": "2026-09-03",
-      "label": "Stockport",
+      "label": "Stock",
       "cat": "stockport"
     },
     {
