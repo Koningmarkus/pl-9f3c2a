@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:08:17Z",
+  "updated": "2026-11-22T23:08:29Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -291,6 +291,13 @@
       "end": "2026-12-15",
       "label": "Stockport",
       "cat": "stockport"
+    },
+    {
+      "id": "emwsg78578g33",
+      "start": "2026-12-19",
+      "end": "2027-01-03",
+      "label": "Philip - Christmas break",
+      "cat": "amber"
     },
     {
       "id": "ev05",
