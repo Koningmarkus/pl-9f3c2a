@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-23T09:20:27Z",
+  "updated": "2026-11-23T10:05:43Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -400,7 +400,7 @@
     {
       "id": "emwsgal3yb8hj",
       "start": "2027-03-26",
-      "end": "2027-04-11",
+      "end": "2027-04-09",
       "label": "Philip Easter",
       "cat": "amber"
     },
