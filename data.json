@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-23T07:04:36Z",
+  "updated": "2026-11-23T07:36:15Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -242,6 +242,13 @@
       "end": "2026-11-23",
       "label": "TBC Stefan hulle",
       "cat": "purple"
+    },
+    {
+      "id": "emwsyc87hewoa",
+      "start": "2026-11-23",
+      "end": "2026-11-23",
+      "label": "TeddyVet16:15(R)",
+      "cat": "green"
     },
     {
       "id": "ev14",
