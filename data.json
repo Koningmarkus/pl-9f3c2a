@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-22T23:54:35Z",
+  "updated": "2026-11-23T00:01:27Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -298,6 +298,13 @@
       "end": "2026-12-11",
       "label": "XMAS BHW",
       "cat": "amber"
+    },
+    {
+      "id": "emwsi3cbvo6e9",
+      "start": "2026-12-13",
+      "end": "2026-12-13",
+      "label": "Test overlap",
+      "cat": "purple"
     },
     {
       "id": "ev18",
