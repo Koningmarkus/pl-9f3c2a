@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-23T07:36:15Z",
+  "updated": "2026-11-23T08:30:38Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -244,13 +244,6 @@
       "cat": "purple"
     },
     {
-      "id": "emwsyc87hewoa",
-      "start": "2026-11-23",
-      "end": "2026-11-23",
-      "label": "TeddyVet16:15(R)",
-      "cat": "green"
-    },
-    {
       "id": "ev14",
       "start": "2026-11-23",
       "end": "2026-11-24",
@@ -307,13 +300,6 @@
       "cat": "amber"
     },
     {
-      "id": "emwsi3cbvo6e9",
-      "start": "2026-12-13",
-      "end": "2026-12-13",
-      "label": "Test overlap",
-      "cat": "purple"
-    },
-    {
       "id": "ev18",
       "start": "2026-12-14",
       "end": "2026-12-15",
@@ -326,13 +312,6 @@
       "end": "2027-01-07",
       "label": "Thompsons in UK",
       "cat": "yellow"
-    },
-    {
-      "id": "emwsx7i7l01zc",
-      "start": "2026-12-18",
-      "end": "2026-12-18",
-      "label": "Break up day",
-      "cat": "amber"
     },
     {
       "id": "ev05",
