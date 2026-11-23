@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-23T15:28:57Z",
+  "updated": "2026-11-23T15:29:02Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -381,7 +381,7 @@
       "start": "2027-02-12",
       "end": "2027-02-20",
       "label": "Ski - Valloire",
-      "cat": "out"
+      "cat": "leave"
     },
     {
       "id": "emwsgaavrmzbw",
