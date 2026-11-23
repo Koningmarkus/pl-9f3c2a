@@ -16,6 +16,7 @@
     --ink:#1A1A17; --ink-2:#4A4A43; --muted:#8A857A;
     --rule:#D5CEBE; --rule-soft:#E6E0D2;
     --accent:#1F5FBF; --warn:#A32A1E; --ok:#2B6248;
+    --past:#E3E1DC; --past-we:#D6D3CD; --pastbar:#6F6F6C; --pastbar-edge:#555553; --pastbar-ink:#F4F3F0;
     --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
     --f-hand:"Caveat","Bradley Hand","Segoe Print",cursive;
     --f-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
@@ -29,6 +30,7 @@
       --ink:#EFEADF; --ink-2:#C7C2B6; --muted:#8B8679;
       --rule:#35353F; --rule-soft:#282830;
       --accent:#7FA9F0; --warn:#E0796C; --ok:#6FBF97;
+      --past:#2B2B2F; --past-we:#333338; --pastbar:#4C4C52; --pastbar-edge:#66666D; --pastbar-ink:#C9C8C4;
     }
   }
   :root[data-theme="dark"]{
@@ -37,6 +39,7 @@
     --ink:#EFEADF; --ink-2:#C7C2B6; --muted:#8B8679;
     --rule:#35353F; --rule-soft:#282830;
     --accent:#7FA9F0; --warn:#E0796C; --ok:#6FBF97;
+      --past:#2B2B2F; --past-we:#333338; --pastbar:#4C4C52; --pastbar-edge:#66666D; --pastbar-ink:#C9C8C4;
   }
   *{box-sizing:border-box}
   html,body{margin:0}
@@ -113,6 +116,8 @@
   .colbg{grid-row:1 / -1; z-index:0; border-right:1px solid var(--rule-soft)}
   .colbg.we{background:var(--weekend)}
   .colbg.void{background:var(--paper-2); opacity:.7}
+  .colbg.past{background:var(--past)}
+  .colbg.past.we{background:var(--past-we)}
 
   .dnum{
     grid-row:1; z-index:1; font-family:var(--f-mono); font-size:var(--numfs); font-variant-numeric:tabular-nums;
@@ -138,6 +143,8 @@
   @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .bar span{text-shadow:none} }
   :root[data-theme="dark"] .bar span{text-shadow:none}
   .bar:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+  .bar.past{background:var(--pastbar); box-shadow:inset 0 0 0 1.5px var(--pastbar-edge); color:var(--pastbar-ink)}
+  .bar.past span{text-shadow:none}
 
   .swipe{font-family:var(--f-mono);font-size:.62rem;color:var(--muted);padding-top:.4rem}
 
@@ -356,6 +363,25 @@
   function parseIso(s){ var p=s.split("-"); return new Date(Date.UTC(+p[0], +p[1]-1, +p[2])); }
   function dayDiff(a,b){ return Math.round((parseIso(b)-parseIso(a))/86400000); }
   function todayIso(){ var n=new Date(); return iso(n.getFullYear(), n.getMonth(), n.getDate()); }
+  /* Width of a written label, in day columns. Entry text is always 0.36 of a column
+     wide per em (see applyZoom), so this ratio holds at every zoom level. */
+  var BARFS=0.36, labelW={}, measurer=null;
+  function labelCols(text){
+    if(labelW[text]!==undefined) return labelW[text];
+    if(!measurer){
+      var cv=document.createElement("canvas");
+      measurer=cv.getContext ? cv.getContext("2d") : null;
+    }
+    var w;
+    if(measurer){
+      var fam=getComputedStyle(document.documentElement).getPropertyValue("--f-hand")||"cursive";
+      measurer.font="600 100px "+fam;
+      w=measurer.measureText(text).width/100*BARFS;
+    } else {
+      w=text.length*0.5*BARFS;
+    }
+    return (labelW[text]=w);
+  }
   function catById(id){ for(var i=0;i<state.cats.length;i++) if(state.cats[i].id===id) return state.cats[i]; return state.cats[0]; }
   function rgba(hex,a){
     var h=String(hex||"#999999").replace("#","");
@@ -418,7 +444,7 @@
     r.setProperty("--lw",     px(1.55));
     r.setProperty("--laneh",  px(0.50));
     r.setProperty("--dateh",  px(0.48));
-    r.setProperty("--barfs",  px(0.36));
+    r.setProperty("--barfs",  px(BARFS));
     r.setProperty("--numfs",  px(0.27));
     r.setProperty("--hdrfs",  px(0.26));
     r.setProperty("--mlabfs", px(0.31));
@@ -571,10 +597,13 @@
       var segs=buckets[w.y+"-"+w.m].slice().sort(function(a,b){ return a.from-b.from || (b.to-b.from)-(a.to-a.from); });
       var lanes=[];
       segs.forEach(function(sg){
+        var txt=sg.ev.label || catById(sg.ev.cat).name;
+        sg.l=sg.from-1;
+        sg.r=Math.max(sg.to, sg.l + BARFS*0.3 + labelCols(txt) + 0.15);
         var li=0;
         for(;;){
           if(!lanes[li]) lanes[li]=[];
-          var clash=lanes[li].some(function(x){ return !(sg.to<x.from || sg.from>x.to); });
+          var clash=lanes[li].some(function(x){ return !(sg.r<=x.l || sg.l>=x.r); });
           if(!clash){ lanes[li].push(sg); sg.lane=li; break; }
           li++;
         }
@@ -602,6 +631,7 @@
         if(!inMonth) continue;
 
         var key=iso(w.y,w.m,dayNum);
+        if(key<tIso) bg.className+=" past";
         var num=document.createElement("div");
         num.className="dnum"+(BH[key]?" bh":"")+(key===tIso?" today":"");
         num.style.gridColumn=String(col+1);
@@ -620,11 +650,14 @@
       segs.forEach(function(sg){
         var c=catById(sg.ev.cat);
         var b=document.createElement("button");
-        b.type="button"; b.className="bar";
+        var gone=sg.ev.end<tIso;
+        b.type="button"; b.className="bar"+(gone?" past":"");
         b.style.gridColumn=(offset+sg.from)+" / span "+(sg.to-sg.from+1);
         b.style.gridRow=String(sg.lane+2);
-        b.style.background=rgba(c.color,.34);
-        b.style.boxShadow="inset 0 0 0 1.5px "+rgba(c.color,.62);
+        if(!gone){
+          b.style.background=rgba(c.color,.34);
+          b.style.boxShadow="inset 0 0 0 1.5px "+rgba(c.color,.62);
+        }
         b.dataset.id=sg.ev.id;
         var sp=document.createElement("span");
         sp.textContent=sg.ev.label || c.name;
@@ -966,6 +999,12 @@
     state.loaded=true;
     setStatus("Could not load the planner. "+e.message,"bad");
   });
+
+  /* The handwriting font arrives after first paint and is wider or narrower than the
+     fallback, so label widths are measured again once it is in. */
+  if(document.fonts && document.fonts.ready && document.fonts.ready.then){
+    document.fonts.ready.then(function(){ labelW={}; if(state.loaded) render(); });
+  }
 
   window.addEventListener("beforeunload",function(e){
     if(state.dirty){ e.preventDefault(); e.returnValue=""; }
