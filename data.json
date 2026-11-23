@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-23T15:29:02Z",
+  "updated": "2026-11-23T15:29:08Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -318,7 +318,7 @@
       "start": "2026-12-26",
       "end": "2027-01-02",
       "label": "ski Thompsons",
-      "cat": "green"
+      "cat": "leave"
     },
     {
       "id": "ev06",
