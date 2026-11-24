@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-24T22:20:50Z",
+  "updated": "2026-11-24T22:36:43Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -529,6 +529,13 @@
       "end": "2027-08-31",
       "label": "Philip Summer",
       "cat": "amber"
+    },
+    {
+      "id": "emwv9xpt70k4s",
+      "start": "2027-08-07",
+      "end": "2027-08-14",
+      "label": "P&O Iona Norway cruise (TENTATIVE - NOT BOOKED)",
+      "cat": "yellow"
     },
     {
       "id": "emwshk6s5g68q",
