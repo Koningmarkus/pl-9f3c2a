@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-24T18:13:22Z",
+  "updated": "2026-11-24T22:19:39Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -361,6 +361,13 @@
       "end": "2027-01-12",
       "label": "Stock Excomm BCP",
       "cat": "stockport"
+    },
+    {
+      "id": "emwv9c3ru7ig8",
+      "start": "2027-01-15",
+      "end": "2027-01-15",
+      "label": "Mia and Philip dentist (morning)",
+      "cat": "green"
     },
     {
       "id": "em1ztwzoxy1cp",
