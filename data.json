@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-23T15:29:08Z",
+  "updated": "2026-11-24T18:13:22Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -328,6 +328,13 @@
       "cat": "leave"
     },
     {
+      "id": "emscg2rsqsmzw",
+      "start": "2027-01-03",
+      "end": "2027-01-03",
+      "label": "SurreyCricket [1pm]",
+      "cat": "out"
+    },
+    {
       "id": "emwsgbfu34oz9",
       "start": "2027-01-04",
       "end": "2027-01-04",
@@ -363,11 +370,25 @@
       "cat": "purple"
     },
     {
+      "id": "emscifsbluch0",
+      "start": "2027-01-24",
+      "end": "2027-01-24",
+      "label": "SurreyCricket [8:45am]",
+      "cat": "out"
+    },
+    {
       "id": "emwt21sq1osgi",
       "start": "2027-01-30",
       "end": "2027-01-31",
       "label": "Belgium",
       "cat": "purple"
+    },
+    {
+      "id": "emsc60rallykt",
+      "start": "2027-01-31",
+      "end": "2027-01-31",
+      "label": "SurreyCricket [8:45am]",
+      "cat": "out"
     },
     {
       "id": "emwsg6ymnrylg",
@@ -377,11 +398,25 @@
       "cat": "green"
     },
     {
+      "id": "emscjjromrhg0",
+      "start": "2027-02-07",
+      "end": "2027-02-07",
+      "label": "SurreyCricket [8:45am]",
+      "cat": "out"
+    },
+    {
       "id": "em2vabaudxfj2",
       "start": "2027-02-12",
       "end": "2027-02-20",
       "label": "Ski - Valloire",
       "cat": "leave"
+    },
+    {
+      "id": "emscjohu4hk11",
+      "start": "2027-02-14",
+      "end": "2027-02-14",
+      "label": "SurreyCricket [8:45am]",
+      "cat": "out"
     },
     {
       "id": "emwsgaavrmzbw",
@@ -391,10 +426,45 @@
       "cat": "amber"
     },
     {
+      "id": "emsc3ujrapt2u",
+      "start": "2027-02-21",
+      "end": "2027-02-21",
+      "label": "SurreyCricket [8:45am]",
+      "cat": "out"
+    },
+    {
+      "id": "emscym0l7ojzv",
+      "start": "2027-02-28",
+      "end": "2027-02-28",
+      "label": "SurreyCricket [8:45am]",
+      "cat": "out"
+    },
+    {
+      "id": "emsc50yqbxot4",
+      "start": "2027-03-07",
+      "end": "2027-03-07",
+      "label": "SurreyCricket [8:45am]",
+      "cat": "out"
+    },
+    {
       "id": "emlefkthcizem",
       "start": "2027-03-12",
       "end": "2027-03-14",
       "label": "Rugby tour",
+      "cat": "out"
+    },
+    {
+      "id": "emscst11ty4et",
+      "start": "2027-03-14",
+      "end": "2027-03-14",
+      "label": "SurreyCricket [8:45am]",
+      "cat": "out"
+    },
+    {
+      "id": "emscp97f521cu",
+      "start": "2027-03-21",
+      "end": "2027-03-21",
+      "label": "SurreyCricket [8:45am]",
       "cat": "out"
     },
     {
