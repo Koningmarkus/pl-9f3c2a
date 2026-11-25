@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-25T13:51:39Z",
+  "updated": "2026-11-25T13:51:50Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -309,7 +309,7 @@
     {
       "id": "emww6moeim66a",
       "start": "2026-12-22",
-      "end": "2026-12-22",
+      "end": "2027-01-04",
       "label": "Richelle Leave",
       "cat": "physio"
     },
