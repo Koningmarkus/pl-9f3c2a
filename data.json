@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-24T22:36:43Z",
+  "updated": "2026-11-25T13:44:47Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -36,7 +36,7 @@
     },
     {
       "id": "purple",
-      "name": "Unnamed (purple)",
+      "name": "TwG",
       "color": "#8A4FBF",
       "leave": false
     },
