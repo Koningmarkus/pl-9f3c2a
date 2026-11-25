@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-25T13:52:09Z",
+  "updated": "2026-11-25T13:54:27Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -332,7 +332,7 @@
       "start": "2026-12-23",
       "end": "2026-12-23",
       "label": "TwG (DAY)",
-      "cat": "leave"
+      "cat": "purple"
     },
     {
       "id": "emww6ge0wxzdx",
