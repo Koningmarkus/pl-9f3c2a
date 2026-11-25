@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-25T13:46:06Z",
+  "updated": "2026-11-25T13:46:45Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -310,6 +310,13 @@
       "id": "emww6fk7wcqs5",
       "start": "2026-12-18",
       "end": "2026-12-18",
+      "label": "TwG (PM)",
+      "cat": "purple"
+    },
+    {
+      "id": "emww6ge0wxzdx",
+      "start": "2026-12-24",
+      "end": "2026-12-24",
       "label": "TwG (PM)",
       "cat": "purple"
     },
