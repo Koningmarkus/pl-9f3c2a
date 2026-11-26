@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-25T13:56:03Z",
+  "updated": "2026-11-26T11:22:07Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -585,6 +585,13 @@
       "end": "2027-10-09",
       "label": "ExComm Worcester",
       "cat": "out"
+    },
+    {
+      "id": "em261126112207",
+      "start": "2027-01-21",
+      "end": "2027-01-21",
+      "label": "MOT Nissan expires",
+      "cat": "green"
     }
   ]
 }
