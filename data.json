@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-26T14:43:39Z",
+  "updated": "2026-11-27T16:30:51Z",
   "timezone": "Europe/London",
   "leaveAllowance": 24,
   "pens": [
@@ -268,7 +268,7 @@
       "id": "emwsg5ydktfbw",
       "start": "2026-12-05",
       "end": "2026-12-05",
-      "label": "MiaMed14:45",
+      "label": "MiaMed08:30",
       "cat": "green"
     },
     {
